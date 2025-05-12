@@ -1,0 +1,592 @@
+@charset "UTF-8";
+/*
+Brianna Craig | 200602233
+DUE 4/16/25
+
+Project:
+Using CSS, construct a complete visual design for the popular "Style Stage" challenge at https://stylestage.dev/.
+Your design must be your very own, and you cannot use a CSS framework or template - it must be original work.
+
+INSTRUCTIONS
+    - Carefully read the "About" and "Guidelines" sections on the page at https://stylestage.dev/.
+    - Build a responsive layout for the provided HTML page (you may not change the HTML) using CSS media queries, flexbox, and/or grid.
+        Include at least 2 different layouts - one for the small screen (a smartphone), and one for a desktop/laptop.
+    - Select suitable web-safe font(s) and apply effective typographic styles for content copy including body text, headings,
+        lists, navigation etc. using CSS.
+    - Ensure that any navigational elements adapt appropriately to smaller and larger screen widths.
+    - Apply a tasteful colour scheme, perhaps with suitable background-images and possibly branding elements.
+    - Validate your CSS to be sure it is free of errors (https://jigsaw.w3.org/css-validator/).
+    - Structure, organize, format and comment your CSS file(s).
+    - Have fun – perhaps even submit your design to Style Stage if you think you'd like to share it with the community.
+
+TAKE IT FURTHER
+    - Perhaps include some interesting and suitable web fonts from a font-service or with the @font-face rule.
+    - Use a variety of CSS rules to improve the typography – open up the line-spacing, spread out the letters in headings,
+        change the case etc.
+    - Include a variety of special CSS effects in a tasteful manner (like drop shadows, background images, gradients, etc.)
+    - Anything else that you can dream up…
+ */
+
+/* google fonts */
+.lexend-GoogleFontLexend {
+             font-family: "Lexend", sans-serif;
+             font-optical-sizing: auto;
+             font-weight: 100;
+             font-style: normal;
+         }
+
+/* html and body styling */
+html{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #402440, #5e3a5e, #402440, #5e3a5e, #402440, #5e3a5e);
+}
+body{
+    border: 3px solid #503050;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: #C8A2C8;
+    max-width: 80%;
+    line-height: 1.4;
+}
+
+/* basic shared title CSS */
+h2, h3, h4{
+    text-align: center;
+    font-family: Lexend, sans-serif;
+
+}
+h2{
+    margin: 10px;
+    font-size: 2.5rem;
+}
+/* all anchor links */
+a{
+    color: #c1327e;
+    text-decoration: none;
+}
+
+
+/* skips to main, have top middle page */
+.skip-link{
+    margin: 10px 0 10px 0;
+    width: auto;
+    height: 100%;
+    text-align: center;
+    background-color: #7c4a7c;
+    border: 4px solid #7c4a7c;
+    font-size: 1rem;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    text-shadow: 1px 1px rgba(0,0,0,0.5);
+    border-radius: 100px;
+}
+.skip-link:hover{
+    transform: translate(2px,-2px);
+    box-shadow: 1px 2px rgba(0, 0, 0, 0.8);
+}
+.skip-link:active{
+    box-shadow: 1px 1px rgba(0,0,0,0.8);
+}
+
+
+/* header styling */
+header{
+    width: 100%;
+    text-align: center;
+}
+header h1 {
+    margin: 0;
+    /* have the h1 title look cool */
+    background: linear-gradient(90deg, rebeccapurple, hotpink, rebeccapurple);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 7rem;
+    font-weight: bold;
+    font-family: cursive, sans-serif;
+}
+header h2{
+    font-size: 2rem;
+}
+header p{
+    padding: 10px;
+}
+header p a{
+    text-decoration: none;
+}
+header p a:hover{
+    text-decoration: underline;
+}
+/* github link */
+.link-github{
+    background-color: #7c4a7c;
+    border: 10px solid #7c4a7c;
+    color: white;
+    text-decoration: none;
+    text-shadow: 1px 1px black;
+}
+.link-github svg{
+    height: 20px;
+    width: auto;
+}
+.link-github:hover{
+    text-decoration: 2px underline white;
+}
+
+
+/* nav styling (have all own button) */
+nav{
+    padding: 60px 0 50px 0;
+    margin: 0;
+    border-bottom: 1px solid #502d50;
+}
+nav ul{
+    text-wrap: wrap;
+    padding: 0;
+    display: flex;
+    text-align: center;
+    gap: 10px;
+}
+nav ul li {
+    /* get rid of dot list*/
+    list-style: none;
+}
+/* make the nav's circular */
+nav ul li a{
+    margin: 0;
+    border: 3px solid #502d50;
+    background-color: #7c4a7c;
+    border-radius: 50%;
+    text-decoration: none;
+    color: white;
+    font-size: 1.3rem;
+    padding: 20px;
+
+}
+nav ul li:hover{
+    transform: translate(2px, -4px);
+}
+nav ul li a:hover{
+    background-color: #502d50;
+}
+
+
+
+/* main styling */
+main{
+    max-width: 93%;
+    gap: 40px;
+    font-size: 1.2rem;
+}
+
+
+/* articles */
+
+/* first 'section' */
+#about{
+    margin: 30px;
+}
+#about section {
+    background-color: whitesmoke;
+    padding: 10px;
+}
+#about section p:nth-child(2)::before{
+    content: "----";
+    color: transparent;
+}
+#about section p:nth-child(3) strong{
+    font-style: italic;
+}
+#about section blockquote strong{
+    font-size: 1.5rem;
+    font-style: normal;
+}
+#about section blockquote{
+    background-color: rgba(129, 50, 193, 0.1);
+    margin: 20px 200px;
+    padding: 1px 10px;
+    max-width: 700px;
+    box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.5);
+}
+#about section blockquote a:hover{
+    font-size: 1.5rem;
+}
+
+
+/* second 'section' */
+#about section + section {
+    margin-top: 30px;
+    background-color: whitesmoke;
+    padding: 10px;
+}
+#about section + section p:nth-child(3){
+    text-align: center;
+    margin: 0;
+    font-size: 1.6rem;
+    text-decoration: underline;
+}
+#about section + section ul li{
+    margin: 1px 0 1px 12rem;
+    max-width: 300px;
+    list-style: circle;
+}
+#about section + section ul li:hover{
+    font-weight: bold;
+    font-size: 1.4rem;
+    cursor: none;
+}
+#about section + section p:last-child{
+    text-align: center;
+}
+
+
+
+/* third 'section' */
+#guidelines{
+    margin: 30px;
+    background-color: whitesmoke;
+    padding: 10px;
+}
+#guidelines h3{
+    font-size: 2rem;
+    background: linear-gradient(180deg, #7c4a7c, #d672aa, #7c4a7c);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+#guidelines p:first-letter{
+    font-weight: bold;
+    font-size: 1.4rem;
+}
+#guidelines a.link-guidelines{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    font-size: 1.3rem;
+}
+#guidelines a.link-guidelines:hover{
+    font-size: 1.4rem;
+}
+
+
+/* fourth 'section' */
+#contribute{
+    margin: 30px;
+    background-color: whitesmoke;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+}
+#contribute p:nth-child(2){
+    display: flex;
+    font-style: italic;
+    justify-content: center;
+}
+#contribute section:nth-child(2) h3{
+    font-size: 1.6rem;
+}
+#contribute section:nth-child(2) h3::before{
+
+}
+#contribute section:nth-child(2) h3::after{
+    content: ":";
+    font-weight: bold;
+}
+#contribute section:nth-child(2) ol{
+    max-width: 600px;
+    height: auto;
+}
+#contribute section:nth-child(2) ol li{
+    padding: 10px;
+}
+#contribute #files{
+    margin: 10px;
+}
+#contribute #files h3{
+    font-size: 1.6rem;
+}
+#contribute #files a{
+    color: #462946;
+    background-color: rgba(177, 137, 177, 0.72);
+    text-decoration: none;
+    margin: 20px;
+    padding: 10px;
+    border-radius: 15px;
+    box-shadow: 3px 3px 10px 1px gray;
+}
+#contribute #files a:active{
+    color: #fbdeff;
+}
+
+
+/* asides */
+
+/* aside 1 - who created the page */
+.profile{
+    margin: 30px;
+    text-align: center;
+    border: 3px solid #502d50;
+    border-radius: 50%;
+    padding: 50px 30px;
+    background-color: #ffd6f0;
+}
+.profile h4{
+    font-size: 2.3rem;
+    margin: 25px;
+}
+.profile ul{
+    padding-left: 6rem;
+    text-align: left;
+    list-style: none;
+}
+.profile a{
+    font-size: 1.3rem;
+}
+
+
+
+/* aside 2 - top three featured styles plus link to a bunch */
+#styles{
+    display: flex;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: auto;
+    padding: 0 60px 30px 30px;
+}
+#styles h2{
+    margin: 20px 0 30px 0;
+}
+#styles .features{
+    list-style: none;
+    display: flex;
+    margin-bottom: 30px;
+    gap: 70px;
+}
+#styles .features li a{
+    font-size: 1.2rem;
+}
+#styles .features li:first-child{
+    border: 1px solid black;
+    box-shadow: -4px -4px rgba(0, 0, 0, 0.4);
+    width: 90px;
+    padding: 20px;
+    background-color: rgba(245, 245, 245, 0.9);
+}
+#styles .features li:nth-child(2){
+    border: 1px solid black;
+    box-shadow: -4px -4px rgba(0, 0, 0, 0.4);
+    width: 100px;
+    padding: 20px;
+    background-color: rgba(245, 245, 245, 0.9);
+}
+#styles .features li:last-child{
+    border: 1px solid black;
+    box-shadow: -4px -4px rgba(0, 0, 0, 0.4);
+    width: 100px;
+    padding: 20px;
+    background-color: rgba(245, 245, 245, 0.9);
+}
+#styles .features li:hover{
+    transform: translate(-1px, -1px);
+    box-shadow: -3px -3px rgba(0, 0, 0, 0.5);
+}
+#styles .features li span:nth-child(2){
+
+}
+#styles a:last-child{
+    text-decoration: none;
+    border-radius: 2px;
+    padding: 10px;
+    font-size: 1.7rem;
+}
+#styles a:last-child:hover{
+    font-size: 2rem;
+}
+#styles a:last-child:active{
+    background: linear-gradient(180deg, rebeccapurple, hotpink, rebeccapurple);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+
+
+
+/* footer styling */
+.page-footer{
+    border-top: 1px solid #502d50;
+    text-align: center;
+    margin: 40px;
+    padding: 0;
+}
+.page-footer p:first-child{
+    margin-top: 10px;
+    font-style: italic;
+    font-size: 1.6rem;
+    padding: 20px 0 0 0;
+}
+.page-footer p:first-child a{
+    font-weight: bold;
+}
+.page-footer ul{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+}
+.page-footer ul li{
+    list-style: none;
+    margin: 20px 0;
+    padding: 0;
+}
+.page-footer ul li a{
+    margin: 0 10px;
+    text-decoration: none;
+    border: 3px solid #502d50;
+    background-color: #7c4a7c;
+    border-radius: 10px;
+    color: white;
+    font-size: 1rem;
+    padding: 12px;
+}
+.page-footer ul li:hover{
+    text-decoration: none;
+    transform: translate(-2px, -2px);
+}
+.page-footer ul li a:hover{
+    background-color: #502d50;
+    text-decoration: none;
+}
+.page-footer p:last-child{
+    text-transform: uppercase;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 0.5rem;
+}
+
+
+
+
+
+/* mobile friendly css */
+@media screen and (max-width: 768px){
+    nav ul{
+        flex-direction: column;
+        gap: 50px;
+    }
+
+    #about section blockquote{
+        width: 300px;
+        margin-left: 90px;
+    }
+
+    #about section + section ul li{
+        margin-left: 60px;
+    }
+
+    #contribute #files a{
+        padding: 5px;
+        margin: 5px;
+    }
+
+    .page-footer ul{
+        flex-direction: column;
+        gap: 0;
+    }
+    .page-footer ul li a{
+        padding: 6px;
+    }
+
+}
+@media screen and (max-width: 480px) {
+
+    body{
+        max-width: 300px;
+        display: flex;
+        align-content: center;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+        padding: 0;
+    }
+
+
+    header h1{
+        font-size: 5rem;
+    }
+    header h2{
+        font-size: 1.7rem;
+    }
+
+    nav ul li a{
+        padding: 15px;
+    }
+
+    main{
+        max-width: 300px;
+    }
+    #about{
+        margin: 0;
+    }
+    #about section blockquote{
+        width: 150px;
+        margin-left: 20px;
+    }
+
+    #about section + section{
+        margin-top: 0;
+        border-top: 1px solid black;
+    }
+    #about section + section ul li{
+        padding: 0;
+        margin: 0;
+    }
+
+    #guidelines{
+        margin: 0;
+        border-top: 1px solid black;
+    }
+    #contribute{
+        margin: 0;
+        border-top: 1px solid black;
+    }
+    #contribute #files a{
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        padding: 5px;
+        margin: 5px 10px;
+    }
+
+    .profile ul{
+        padding-left: 10px;
+    }
+
+    #styles .features{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .page-footer ul{
+        flex-direction: column;
+        gap: 10px;
+    }
+    .page-footer ul li a{
+        padding: 5px;
+    }
+}
