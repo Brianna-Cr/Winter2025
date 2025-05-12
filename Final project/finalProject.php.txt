@@ -1,0 +1,167 @@
+<?php
+
+// Brianna Craig | 200602233
+// 4/11/2025 11:59PM
+
+/*
+Final Project:
+    Topic:
+        Liquor Store
+    Description:
+        Before entering the Liquor Store, user must verify age (19+). Once verified, user is asked what location of branch they would like to set as their store. Then, the user is taken to the 'Categories' page, where they are able to choose a category to view the available products for that store. Then they are asked to either view another category, store location, or exit the page.
+*/
+function main(){
+    // confirm if of age before entering site
+    echo "\nMust be Legal Drinking Age to Continue\n";
+    $birthYear = (int)readline("Enter your birth year (ex. 1990): ");
+    
+    // if user is 19 or older
+    if ($birthYear<= 2006){
+        $age = 2025-$birthYear;
+        echo "You are $age years old and eligable to continue!\n";
+        storeLocation();
+    }else{
+        // end
+        echo "\nYou are younger than 19. You may not continue.\nHave a great day!";
+    }
+}
+
+// choose a store location
+function storeLocation(){
+    // store locations
+    $locations = ["Midland", "Barrie", "Orillia", "Toronto"];
+    echo "\nStore Locations:    Midland / Barrie / Orillia / Toronto\n";
+    $setLocation = readline("Enter store Location: ");
+    
+    // check is user entered valid location
+    for($i=0;$i<count($locations);$i++){
+        if(strtolower($setLocation) === strtolower($locations[$i])){
+            // if valid then it will show products list
+            products($i, $locations[$i]);
+            return;
+        }
+    }
+    // invalid input
+    echo "Invalid location was entered. Please try again.\n";
+    storeLocation(); //reask
+}
+
+// view available products (different per location)
+function products($indexLocation, $locationName){
+    // I added stars from https://fsymbols.com/signs/stars/ 
+    echo "\n~☆    Welcome to the $locationName Liquor Store!    ☆~\n";
+    // 0=Vodka, 1=Tequila, 2=Whiskey, 3=Soju, 4=Coolers
+    $categories = array("Vodka", "Tequila", "Whiskey", "Soju", "Coolers");
+    $products = array(); // will manually declare in switch using index arrays
+    
+    // define products based on chosen location
+    // random prices because LCBO webpage was done so guessed 
+    switch($indexLocation){
+        case 0: //Midland
+            $products[0] = array("Absolut .. \$34.30");
+            $products[1] = array("Don Julio .. \$65.70", "Patron .. \$64.40");
+            $products[2] = array("Jack Daniel's .. \$69.10");
+            //$products[3] = no products for soju
+            $products[4] = array("Mike's Hard .. \$3.50", "Smirnoff .. \$3.80", "White Claw .. \$3.90");
+            break;
+        case 1: //Barrie
+            $products[0] = array("Absolut ..\$47.30", "Crystal Head .. \$48.90", "Grey Goose .. \$49.50", "Titos .. \$52.10");
+            $products[1] = array("1800 .. \$67.10", "Don Julio .. \$65.70", "Milagro .. \$63.90", "Patron .. \$64.40");
+            $products[2] = array("Bardstown .. \$74.20", "Catoctin Creek .. \$75.90", "Jack Daniel's .. \$75.10");
+            $products[3] = array("Apple .. \$10.90", "Grape .. \$10.90", "Peach .. \$10.90", "Plum .. \$10.90", "Strawberry .. \$10.90");
+            $products[4] = array("Coors Seltzer .. \$3.90", "Mike's Hard .. \$3.50", "Smirnoff .. \$3.80", "White Claw .. \$3.90");
+            break;
+        case 2: //Orillia
+            $products[0] = array("Absolut ..\$34.30", "Crystal Head .. \$48.90", "Titos .. \$52.10");
+            $products[1] = array("1800 .. \$67.10", "Don Julio .. \$65.70", "Patron .. \$64.40");
+            //$products[2] = no products for whiskey
+            $products[3] = array("Grape .. \$10.90", "Peach .. \$10.90", "Plum .. \$10.90", "Strawberry .. \$10.90");
+            $products[4] = array("Mike's Hard .. \$3.50", "Smirnoff .. \$3.80");
+            break;
+        case 3: //Toronto
+            $products[0] = array("Absolut ..\$34.30", "Crystal Head .. \$48.90", "Grey Goose .. \$49.50", "Skyy .. \$34.20", "Titos .. \$52.10");
+            $products[1] = array("1800 .. \$67.10", "Don Julio .. \$65.70", "Milagro .. \$63.90", "Patron .. \$64.40");
+            $products[2] = array("Bardstown .. \$74.20", "Catoctin Creek .. \$75.90", "Jack Daniel's .. \$75.10", "Monk's Road .. \$72.90");
+            $products[3] = array("Apple .. \$10.90", "Grape .. \$10.90", "Peach .. \$10.90", "Plum .. \$10.90", "Strawberry .. \$10.90");
+            $products[4] = array("Coors Seltzer .. \$3.90", "Mike's Hard .. \$3.50", "Smirnoff .. \$3.80", "White Claw .. \$3.90");
+            break;
+        default:
+            echo "Invalid Location\n";
+            return;
+    }
+    // categories list
+    echo "Categories:\n";
+    foreach($categories as $category){
+        // dot from https://fsymbols.com/signs/bullet-point/
+        echo " • $category\n";
+    }
+    $choice = readline("Enter a category to see products: ");
+    
+    if (in_array(strtolower($choice), array_map('strtolower', $categories))) {
+        viewProducts($products, $choice, $locationName, $indexLocation);
+    } else {
+        echo "Category invalid. Please try again.\n";
+        products($indexLocation, $locationName);
+    }
+}
+
+// view products in category chosen
+function viewProducts($products, $choice, $locationName, $indexLocation) {
+    // categories
+    $categoryIndex = -1;
+    switch (strtolower($choice)) {
+        case "vodka":
+            $categoryIndex = 0;
+            break;
+        case "tequila":
+            $categoryIndex = 1;
+            break;
+        case "whiskey":
+            $categoryIndex = 2;
+            break;
+        case "soju":
+            $categoryIndex = 3;
+            break;
+        case "coolers":
+            $categoryIndex = 4;
+            break;
+        default:
+            echo "Invalid category.\n";
+            return;
+    }
+    // once deemed valid, show products
+    if (isset($products[$categoryIndex]) && is_array($products[$categoryIndex])) {
+        echo "\n" . ucwords(strtolower($choice)) . " products at $locationName: (tax included)\n";
+        foreach ($products[$categoryIndex] as $product) {
+            echo " • $product\n";
+        }
+    } else { //error for no products
+        echo "No products in stock at the moment \n";
+    }
+    // ask user if they want to view another thing OR exit
+    $else = readline("\nWould you like to 
+    1. View another category
+    2. Change locations
+    3. Exit the site
+Enter choice (1/2/3): ");
+    
+    switch($else){
+        case '1':
+            products($indexLocation, $locationName);
+            break;
+        case '2':
+            storeLocation();
+            break;
+        case '3':
+            echo "\nThank you for visting our site. Have a great day! :)";
+            exit();
+        default:
+            echo "Invalid entry. Please try again\n";
+            viewProducts($products, $choice, $locationName, $indexLocation);
+    }
+    
+}
+    
+// run the main and run all side functions
+main();
+?>
