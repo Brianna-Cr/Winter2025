@@ -1,0 +1,23 @@
+2025-04-07 17:50:13.561724: Employee 24683 - Dean Smith was added 
+2025-04-07 18:10:13.122253: Employee 24683 - information was edited
+2025-04-07 19:08:03.006185: Employee 98941 - Susie Smith was added 
+2025-04-07 19:08:34.056394: Employee 98941 - was edited
+2025-04-07 19:12:01.814521: Employee 98941 - Suzie Smith was added 
+2025-04-09 20:07:48.083943: Employee 48050 - Crumpet Ollie was added 
+2025-04-09 20:08:42.211341: Employee 48050 - was edited
+2025-04-09 20:10:22.456740: Employee 46849 - Bat Man was added 
+2025-04-09 20:12:06.839591: Employee 46849 - was edited
+2025-04-09 20:17:33.694438: Employee 65528 - Joe Doe was added 
+2025-04-09 20:18:39.617469: Employee 65528 - was edited
+2025-04-09 20:19:23.587257: Employee 65528 - was deleted 
+2025-04-09 20:23:49.873033: Employee 88360 - Test Employee was added 
+2025-04-09 20:24:53.376000: Employee 88360 - was edited
+2025-04-09 20:25:49.579081: Employee 88360 - was deleted 
+2025-04-09 20:26:01.321428: Employee 88360 - was deleted 
+2025-04-09 20:30:08.223648: Employee 74698 - B D was added 
+2025-04-09 20:31:30.614003: Employee 62946 - Gary Smith was added 
+2025-04-09 20:32:22.877931: Employee 62946 - was edited
+2025-04-09 20:34:31.282316: Employee 26243 - Fara Lucy was added 
+2025-04-09 20:36:01.508655: Employee 14359 - Dean Hanos was added 
+2025-04-09 20:36:54.746889: Employee 14359 - was edited
+2025-04-09 20:37:27.911853: Employee 14359 - was deleted 

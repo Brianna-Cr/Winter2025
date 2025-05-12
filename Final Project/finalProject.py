@@ -1,0 +1,339 @@
+# Brianna Craig | 200602233
+# 3/28/2025 13:30
+# COMP 1112 - 03
+
+# Final Project
+# DUE: 4/10/2025 17:00
+
+# ○ , ‣ - https://fsymbols.com/signs/bullet-point/
+
+import re 
+import openpyxl
+import time
+import datetime
+import subprocess
+import random
+
+def employeeManagement():
+    # employee spreadsheet plus employee log
+    employeeSpreadsheet = "employeeSpreadsheet.xlsx"
+    employeeLog = "employeeLogInfo.txt"
+   
+    # spreadsheet info
+    spreadSheet = openpyxl.load_workbook(employeeSpreadsheet)
+    sheet = spreadSheet.active
+    employeeCodes = [
+            str(sheet.cell(row=i, column=1).value) for i in range(2, sheet.max_row + 1)
+        ]
+
+    # Welcome message and options display
+    print("\nWelcome to the main page of Employee Management!")
+    print("‣ Add Employee Information")
+    print("‣ Edit Employee Information")
+    print("‣ View Employee and Employee Logs")
+    print("‣ Delete Employee")
+    print("‣ Exit")
+    choice = input("Enter choice: ")
+    choice = choice.lower()
+
+
+
+    # if 'add' is entered, you get choice to add a new or current employee
+    # new: randomly generates a 5 digit-code for the new employee, then date added AND start date is the current date they are added to the system
+    # current: you manually fill out all info, spreadsheet will auto add date added into system
+    if choice == "add":
+        start = input("Are you adding a new or current employee? ").lower()
+        # validation to help any erorrs and have a cleaner code look below
+        while start not in ["new", "current"]:
+            start = input("Invalid input. Please enter new or current: ").lower()
+    
+    # if it is a new employee, their employee code is generated and the start date will be the current date
+        if start == "new":
+            for attempt in range(100):
+                code = str(random.randint(10000, 99999)) # random 5 digit
+                if code not in employeeCodes:
+                    break 
+            else:
+                # no unique employee code was found after 100 tries
+                print("Could not generate unique code. Try again.")
+                return
+
+            print(f"Employee Code: {code}")
+            startDate = datetime.datetime.now()
+
+        # current employee
+        else:
+            code = input("Enter employee's 5-digit code: ")
+            while not code.isdigit() or len(code) != 5:
+                code = input("Invalid code. Enter a 5-digit employee code: ")
+            if code in employeeCodes:
+                code = input("This code is already in use. Please re-enter employee code: ")
+            startDate = input(f"Enter the start date (MM/DD/YYYY): ")
+            while not re.match(r'^\d{2}/\d{2}/\d{4}$', startDate):
+                startDate = input("Use format MM/DD/YYYY: ")
+
+        # necessary information needed by both new and current employees
+        firstName = input("First Name: ").capitalize()
+        lastName = input("Last Name: ").capitalize()
+        initials = firstName[:1]+lastName[:1]
+
+        emailAddress = input("Email Address: ")
+        while not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', emailAddress):
+            emailAddress = input("Email format is invalid. Please try again: ")
+        
+        phoneNumber = input("Phone Number (ex. 705-123-4567): ")
+        while not re.match(r'^\d{3}-\d{3}-\d{4}$', phoneNumber):
+            phoneNumber = input("Invalid phone number. Please try again: ")
+
+        role = input("Employee's Role (Associate/Manager/Supervisor): ").capitalize()
+        while role not in ["Associate", "Manager", "Supervisor"]:
+            role = input("Invalid choice. Please choose one of the following (Associate/Manager/Supervisor): ").capitalize()
+
+        position = input("Full-time (FT) or Part-time (PT): ").upper()
+        while position not in ["FT", "PT"]:
+            position = input("Invalid position. Please choose PT or FT: ").upper()
+
+        dateAdded = datetime.date.today().strftime("%m/%d/%Y")
+
+        # find next available row
+        next_row = 2
+        while sheet.cell(row=next_row, column=1).value:
+            next_row += 1
+
+        # add employee information in next available row
+        sheet.cell(row=next_row, column=1).value = code
+        sheet.cell(row=next_row, column=2).value = firstName
+        sheet.cell(row=next_row, column=3).value = lastName
+        sheet.cell(row=next_row, column=4).value = initials
+        sheet.cell(row=next_row, column=5).value = emailAddress
+        sheet.cell(row=next_row, column=6).value = phoneNumber
+        sheet.cell(row=next_row, column=7).value = role
+        sheet.cell(row=next_row, column=8).value = position
+        sheet.cell(row=next_row, column=9).value = startDate
+        sheet.cell(row=next_row, column=10).value = dateAdded
+        
+        spreadSheet.save(employeeSpreadsheet)
+
+        # adds an employee Log onto a notepad for reference purposes
+        try:
+            with open(employeeLog, "a") as log:
+                log.write(f"{datetime.datetime.now()}: Employee {code} - {firstName} {lastName} was added \n")
+        except Exception as printLog:
+            print("Error: was unable to log file:", printLog)
+        print("Employee Information saved!")
+
+        # return to main page
+        print("\nReturning to main page in 5 seconds...")
+        time.sleep(5)
+        return employeeManagement()
+
+
+
+    # edit employee information (with employee code)
+    elif choice == "edit":
+        employee = input("Enter employee code to edit employee information: ")
+        while employee not in employeeCodes:
+            employee = input("Error: employee code not found. Please re-enter code or exit: ")
+            if employee == "exit" or not employee.isdigit():
+                print("Exiting back to main page..")
+                return employeeManagement()
+        # checks for row of employee info (code)
+        employeeLocation = None
+        for r in range(2, sheet.max_row + 1):
+            if str(sheet.cell(row=r, column=1).value) == employee:
+                employeeLocation = r
+                break
+
+        # options that can be changed    
+        print("\nWhat would you like to edit?")
+        print("○ First Name")
+        print("○ Last Name")
+        print("○ Email Address")
+        print("○ Phone Number")
+        print("○ Role")
+        print("○ Position")
+        print("○ Start Date")
+        edit = input("Enter choice (ex. first name): ").lower()
+
+        # pathes depending on what you chose
+        if edit == "full name":
+            newFirstName = input("Enter NEW first name: ").capitalize()
+            sheet.cell(row=employeeLocation, column=2).value = newFirstName
+        
+        elif edit == "last name":
+            newLastName = input("Enter NEW last name: ").capitalize()
+            sheet.cell(row=employeeLocation, column=3).value = newLastName
+
+        elif edit == "email address":
+            newEmail = input("Enter NEW email address: ")
+            while not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', newEmail):
+                newEmail = input("Invalid email. Please try again: ")
+            sheet.cell(row=employeeLocation, column=5).value = newEmail
+
+        elif edit == "phone number":
+            newPhoneNum = input("Enter NEW phone number (ex. 705-123-4567): ")
+            while not re.match(r'^\d{3}-\d{3}-\d{4}$', newPhoneNum):
+                newPhoneNum = input("Invalid phone number. Please try again: ")
+            sheet.cell(row=employeeLocation, column=6).value = newPhoneNum
+
+        elif edit == "role":
+            newRole = input("Enter NEW role (Associate/Manager/Supervisor): ").capitalize()
+            while newRole not in ["Associate", "Manager", "Supervisor"]:
+                newRole = input("Invalid role. Please choose; Associate, Manager, or Supervisor: ").capitalize()
+            sheet.cell(row=employeeLocation, column=7).value = newRole
+
+        elif edit == "position":
+            newPosition = input("Enter NEW position; FT or PT: ").upper()
+            while newPosition not in ["FT", "PT"]:
+                newPosition = input("Invalid position. Please enter FT or PT: ").upper() 
+            sheet.cell(row=employeeLocation, column=8).value = newPosition
+
+        elif edit == "start date":
+            newStartDate = input("Enter NEW start date: ")
+            while not re.match(r'^\d{2}/\d{2}/\d{4}$', newStartDate):
+                newStartDate = input("Invalid. Please use format MM/DD/YYYY: ")
+            sheet.cell(row=employeeLocation, column=9).value = newStartDate
+
+        else:
+            print("\nError: Invalid Input")
+            edit = input("Enter choice (ex. full name): ").lower()
+
+        # add log for when employee was edited
+        try:
+            with open(employeeLog, "a") as log:
+                log.write(f"{datetime.datetime.now()}: Employee {employee} - was edited\n")
+        except Exception as printLog:
+            print("\nError: was unable to log file;", printLog)
+
+        # save sheet and return to main page
+        spreadSheet.save(employeeSpreadsheet)
+        print("\nReturning to main page in 5 seconds...")
+        time.sleep(5)
+        return employeeManagement()
+
+
+
+    # if 'view' is entered, the program will ask to view employee or logs
+    # if employee: their code will be asked to be entered, once successfully done, it will disply all their information
+    # if logs: an opening logs will print and then after 3 seconds, it will open. It wil record how long it is open for company record purposes
+    elif choice == "view":
+        print("\nWould you like to view an employee's information or the logs?")
+        view = input("Enter (employee) or (logs) to continue: ")
+
+        if view == "employee":
+            employeeCode = input("\nEnter employee's 5-digit code that you would like to view: ")
+            while employeeCode not in employeeCodes:
+                employeeCode = input("Employee not found. Please try again: ")
+            employeeLocation = None
+            for r in range(2, sheet.max_row + 1):
+                if str(sheet.cell(row=r, column=1).value) == employeeCode:
+                    employeeLocation = r
+                    break
+            #display the employees information requested
+            print("\nEmployee Information:")
+            print(f"Employee Code: {sheet.cell(row=employeeLocation, column=1).value}")
+            print(f"First Name: {sheet.cell(row=employeeLocation, column=2).value}")
+            print(f"Last Name: {sheet.cell(row=employeeLocation, column=3).value}")
+            print(f"Initials: {sheet.cell(row=employeeLocation, column=4).value}")
+            print(f"Email Address: {sheet.cell(row=employeeLocation, column=5).value}")
+            print(f"Phone Number: {sheet.cell(row=employeeLocation, column=6).value}")
+            print(f"Role: {sheet.cell(row=employeeLocation, column=7).value}")
+            print(f"Position: {sheet.cell(row=employeeLocation, column=8).value}")
+            print(f"Start Date: {sheet.cell(row=employeeLocation, column=9).value}\n")
+
+        # view employee logs to see activity of program
+        elif view == "logs":
+            print("Opening employee sheet logs...")
+            time.sleep(3)
+            start = time.time()
+            log = subprocess.Popen(["notepad", employeeLog])
+            log.wait()
+            end = time.time()
+            total = end - start
+            print(f"Time spent viewing logs: {total:.2f} seconds")
+        
+        # invalid input
+        else:
+            print("\nInvalid input.")
+            view = input("Enter (employee) or (logs) to continue: ")
+        
+        # return to main page
+        print("\nReturning to main page in 5 seconds...")
+        time.sleep(5)
+        return employeeManagement()
+
+
+
+    # if 'delete' is entered, it prompts for a employee code to be entered, displays code and full name, then confirms deletion
+    elif choice == "delete":
+        employee = input("Enter employee code you would like to delete: ")
+        while employee not in employeeCodes:
+            employee = input("Error: employee code not found. Please re-enter code or exit: ")
+            if employee == "exit" or not employee.isdigit():
+                print("Exiting back to main page..")
+                return employeeManagement()
+        # checks for row of employee info (code)
+        employeeLocation = None
+        for r in range(2, sheet.max_row + 1):
+            if str(sheet.cell(row=r, column=1).value) == employee:
+                employeeLocation = r
+                break
+        
+        #add to log an employee was deleted
+        try:
+            with open(employeeLog, "a") as log:
+                log.write(f"{datetime.datetime.now()}: Employee {employee} - was deleted \n")
+        except Exception as printLog:
+            print("Error: was unable to log file:", printLog)
+
+        # show name of employee before delete
+        print("\nEmployee to be deleted:")
+        # print employee code | firstname lastname
+        print(f"{sheet.cell(row=employeeLocation, column=1).value} | {sheet.cell(row=employeeLocation, column=2).value} {sheet.cell(row=employeeLocation, column=3).value}")
+
+        # wait for 2 seconds to let user view info
+        time.sleep(2)
+        # confirm they would like to delete employee
+        confirmation = input("\nAre you sure you want to delete this employee: ").lower()
+        if confirmation == "yes":
+            # deletes employee
+            sheet.delete_rows(employeeLocation)
+            spreadSheet.save(employeeSpreadsheet)
+            print(f"Employee {employee} has been deleted.")
+        else:
+            # anything else entered, results in error and cancels 
+            print("Error: Delete operation was cancelled")
+
+        time.sleep(1)
+        # save sheet and return to main page
+        spreadSheet.save(employeeSpreadsheet)
+        print("\nReturning to main page in 5 seconds...")
+        time.sleep(5)
+        return employeeManagement()
+        
+
+
+    # if 'exit' is entered, the program will shut down after 2seconds and display message of it excited
+    elif choice == "exit":
+        print("\nClosing Employee Managing Program ...\n")
+        time.sleep(2)
+        print("Exited Employee Managing Program.")
+        exit()
+
+
+
+    # if user inputs invalid input, keep re-asking to enter a valid input
+    else: 
+        print("Invalid Choice. Please enter valid choice to continue")
+        return employeeManagement()
+
+
+# function to run the employeeManagement() program but wait 3 seconds as if it were loading
+def openProgram():
+    print("\nOpening Employee Managing Program ...")
+    # wait 3 seconds before opening program
+    time.sleep(3) 
+    employeeManagement()
+
+# opens program
+openProgram()
